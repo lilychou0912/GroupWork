@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="#fafafa"
+    android:background="#fff"
     android:layout_height="wrap_content">
 
     <TextView
@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_height="25dp"
-        android:textColor="@color/text_color_black"
+        android:textColor="#666666"
         android:textSize="16sp"
         android:background="@color/color_bg_f0f0" />
 

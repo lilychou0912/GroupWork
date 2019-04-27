@@ -6,8 +6,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="#fff"
     android:gravity="center_horizontal"
-    android:padding="10dp">
+    android:padding="12dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,7 +43,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:padding="12dp">
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
@@ -65,6 +67,7 @@
         android:id="@+id/date_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="12dp"
         android:layout_centerHorizontal="true">
         <LinearLayout
             android:id="@+id/start_date"

@@ -112,7 +112,7 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
             }
         });
     }
-    private void showPopupWindow() {
+     private void showPopupWindow() {
         //设置contentView
         View contentView = LayoutInflater.from(NoteOverviewActivity.this).inflate(R.layout.popwindow_select_time, null);
         mPopWindow = new PopupWindow(contentView,

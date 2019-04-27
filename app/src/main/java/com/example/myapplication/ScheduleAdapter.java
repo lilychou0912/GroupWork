@@ -22,6 +22,7 @@ class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
     private List<Schedule> mSchedule;
     private DBhelper dBhelper = new DBhelper();
     private Context context;
+    private String sStarttime, sEndtime;
 
     public ScheduleAdapter(Context context, List<Schedule> list) {
         this.context = context;
@@ -40,8 +41,36 @@ class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
         Glide.with (context).load (sche.getImgUrl ()).into (holder.sImage);
         holder.sName.setText(sche.getName());
         holder.sDuration.setText(sche.getstarttime()+"-"+sche.getendtime());
-        //长按事件监听，长按开启修改页面
+        sStarttime = sche.getstarttime();
+        sEndtime = sche.getendtime();
 
+        /**长按事件监听，长按开启修改页面
+        holder.sCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String name = holder.todoItem.getText().toString();
+                Intent intent = new Intent(v.getContext(), New_ToDo_Activity.class);
+                intent.putExtra("name_extra", name);
+                v.getContext().startActivity(intent);
+                return true;
+            }
+        });
+         **/
+        //点击卡片进入详细编辑页面
+        holder.sCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = holder.sName.getText().toString();
+                String starttime =sStarttime ; ;
+                String endtime = sEndtime;
+                Intent intent = new Intent(v.getContext(), NoteEditActivity.class);
+                intent.putExtra("name_extra", name);
+                intent.putExtra("starttime_extra",starttime);
+                intent.putExtra("endtime_extra",endtime);
+                v.getContext().startActivity(intent);
+
+            }
+            });
         //删除按钮
         holder.sDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +98,7 @@ class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
         TextView sName;
         TextView sDuration;
         TextView sDelete;
+        CardView sCardView;
 
         public MyViewHolder(View itemView) {
 
@@ -78,6 +108,8 @@ class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
             sName = itemView.findViewById(R.id.s_title);
             sDuration = itemView.findViewById(R.id.s_duration);
             sDelete = itemView.findViewById(R.id.s_delete);
+            sCardView = itemView.findViewById(R.id.note_view);
+
         }
     }
 
