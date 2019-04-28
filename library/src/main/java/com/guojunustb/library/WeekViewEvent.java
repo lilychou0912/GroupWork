@@ -1,17 +1,18 @@
 package com.guojunustb.library;
 
-import java.io.Serializable;
+
 import java.util.Calendar;
 
 /**
  * Created by Raquib-ul-Alam Kanak on 7/21/2014.
  * Website: http://april-shower.com
  */
-public class WeekViewEvent implements Serializable {
+public class WeekViewEvent {
     private long mId;
     private Calendar mStartTime;
     private Calendar mEndTime;
     private String mName;
+    private String mLocation;
     private int mColor;
 
     public WeekViewEvent(){
@@ -57,14 +58,27 @@ public class WeekViewEvent implements Serializable {
      * Initializes the event for week view.
      * @param id The id of the event.
      * @param name Name of the event.
+     * @param location The location of the event.
+     * @param startTime The time when the event starts.
+     * @param endTime The time when the event ends.
+     */
+    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime) {
+        this.mId = id;
+        this.mName = name;
+        this.mLocation = location;
+        this.mStartTime = startTime;
+        this.mEndTime = endTime;
+    }
+
+    /**
+     * Initializes the event for week view.
+     * @param id The id of the event.
+     * @param name Name of the event.
      * @param startTime The time when the event starts.
      * @param endTime The time when the event ends.
      */
     public WeekViewEvent(long id, String name, Calendar startTime, Calendar endTime) {
-        this.mId = id;
-        this.mName = name;
-        this.mStartTime = startTime;
-        this.mEndTime = endTime;
+        this(id, name, null, startTime, endTime);
     }
 
 
@@ -90,6 +104,14 @@ public class WeekViewEvent implements Serializable {
 
     public void setName(String name) {
         this.mName = name;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        this.mLocation = location;
     }
 
     public int getColor() {

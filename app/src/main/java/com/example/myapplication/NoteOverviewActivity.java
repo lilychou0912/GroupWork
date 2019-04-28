@@ -40,7 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class NoteOverviewActivity extends Activity implements View.OnClickListener{
+public class NoteOverviewActivity extends Activity implements View.OnClickListener,DatePicker.OnDateChangedListener{
     private PopupWindow mPopWindow;
     private PopupWindow DatePopWindow;
     private LinearLayout llDate;
@@ -71,8 +71,8 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
         initSchedule();
         //初始化RecyclerView适配器
         initRecycle();
-        //更改数据的情况下自动填充原来的数据
-        //initData();
+        //初始化日历时间为当前日期
+        initDateTime();
 
         //对“地图”按钮的响应
         MapBtn.setOnClickListener(new View.OnClickListener() {
@@ -145,14 +145,43 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
         View rootview = LayoutInflater.from(NoteOverviewActivity.this).inflate(R.layout.note_overview, null);
         mPopWindow.showAtLocation(rootview, Gravity.CENTER, 0, 0);
     }
-
+    /**
+     * 获取当前的日期和时间
+     */
+    private void initDateTime() {
+        Calendar calendar = Calendar.getInstance();
+        Syear = Eyear = calendar.get(Calendar.YEAR);
+        Smonth = Emonth = calendar.get(Calendar.MONTH) + 1;
+        Sday = Eday = calendar.get(Calendar.DAY_OF_MONTH);
+        Sdate = new StringBuffer(String.valueOf(Syear));
+        Sdate.append("年").append(String.valueOf(Smonth)).append("月").append(Sday).append("日");
+        Edate = new StringBuffer(String.valueOf(Eyear));
+        Edate.append("年").append(String.valueOf(Emonth)).append("月").append(Eday).append("日");
+    }
+    /**
+     * 日期改变的监听事件
+     *
+     * @param view
+     * @param year
+     * @param monthOfYear
+     * @param dayOfMonth
+     */
+    @Override
+    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        this.Syear = year;
+        this.Smonth = monthOfYear+1;
+        this.Sday = dayOfMonth;
+        this.Eyear = year;
+        this.Emonth = monthOfYear+1;
+        this.Eday = dayOfMonth;
+    }
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
             case R.id.time_pick_ok: {
                 getInput();
-                //添加代办事项
+                //添加行程
                 if (!name.equals("") && starttime != null && endtime != null) {
                     if (oldname == null) {
                         if (dBhelper.addSchedule(name, starttime,endtime) != null) {
@@ -180,8 +209,61 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
             }
             break;
             case R.id.start_date_picker: {
-                Intent intent = new Intent(this,DateSelectActivity.class);
-                startActivityForResult(intent,100);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (Sdate.length() > 0) { //清除上次记录的日期
+                            Sdate.delete(0, Sdate.length());
+                        }
+                        StvDate.setText(Sdate.append(String.valueOf(Syear)).append("-").append(String.valueOf(Smonth)).append("-").append(Sday));
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                View dialogView = View.inflate(this, R.layout.dialog_date, null);
+                final DatePicker datePicker = (DatePicker) dialogView.findViewById(R.id.datePicker);
+
+                dialog.setTitle("设置行程开始日期");
+                dialog.setView(dialogView);
+                dialog.show();
+                //初始化日期监听事件
+                datePicker.init(Syear, Smonth - 1, Sday, this);
+            }
+            break;
+            case R.id.end_date_picker: {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (Edate.length() > 0) { //清除上次记录的日期
+                            Edate.delete(0, Edate.length());
+                        }
+                        EtvDate.setText(Edate.append(String.valueOf(Eyear)).append("-").append(String.valueOf(Emonth)).append("-").append(Eday));
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                View dialogView = View.inflate(this, R.layout.dialog_date, null);
+                final DatePicker datePicker = (DatePicker) dialogView.findViewById(R.id.datePicker);
+
+                dialog.setTitle("设置行程结束日期");
+                dialog.setView(dialogView);
+                dialog.show();
+                //初始化日期监听事件
+                datePicker.init(Eyear, Emonth - 1, Eday, this);
             }
             break;
         }
@@ -198,26 +280,11 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
         name = nameText.getText().toString();
     }
     //获取行程开始时间
-    private void get_starttime(){ starttime = starttime;}
+    private void get_starttime(){ starttime = StvDate.getText().toString();}
     //获取行程截止时间
     private void get_endtime(){
-        endtime = endtime;
+        endtime = EtvDate.getText().toString();
     }
-
-    /**设置初始数据
-    private void initData(){
-        Intent intent = getIntent();
-        oldname = intent.getStringExtra("name_extra");
-        if(oldname != null){
-            Schedule olsSche = dBhelper.findSche(oldname);
-
-            nameText.setText(olsSche.getName());
-            //input_note.setText(olsSche.getNote());
-            //input_alarm.setCurrentHour(oldToDo.getAlarm().getHours());
-            //input_alarm.setCurrentMinute(oldToDo.getAlarm().getMinutes());
-        }
-    }
-**/
     /**
      * 设置背景透明度
      * @param f
@@ -236,23 +303,7 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
             backgroundAlpha(1f);
         }
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 100 && resultCode == DateSelectActivity.RERSULT_CODE) {
-            Bundle extras = data.getExtras();
-            if (extras!=null) {
-                String start = extras.getString(DateSelectActivity.START);
-                starttime = start;
-                String end = extras.getString(DateSelectActivity.END);
-                endtime = end;
-                int days = extras.getInt(DateSelectActivity.DAY_NUMBER);
-
-                StvDate.setText("开始时间："+start + "   结束时间："+end + "   天数："+days);
-            }
-        }
-    }
     private void initRecycle() {
         //纵向滑动
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -265,7 +316,7 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    //初始化待办事项
+    //初始化行程
     private void initSchedule(){
         Sche = dBhelper.getSchedule();
     }
