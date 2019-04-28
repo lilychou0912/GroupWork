@@ -1,0 +1,16 @@
+<resources>
+    <!--MainActivity-->
+    <string name="app_name">test</string>
+    <string name="tab_rb_map">map</string>
+    <string name="tab_rb_edit">edit</string>
+    <string name="tab_rb_collect">collect</string>
+    <string name="action_week_view">Week view</string>
+    <string name="action_day_view">Day view</string>
+    <string name="action_publish">发布</string>
+    <string name="action_delete">删除</string>
+    <string name="action_draft">存为草稿</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>
+

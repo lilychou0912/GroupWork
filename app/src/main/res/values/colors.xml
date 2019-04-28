@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <color name="colorPrimary">#abcb1e</color>
+        <color name="colorPrimaryDark">#abcb1e</color>
+        <color name="colorAccent">#abcb1e</color>
+        <color name="color_white">#fff</color>
+        <color name="text_color_black">#333</color>
+        <color name="color_them">#abcb1e</color>
+        <color name="color_text_b3">#b3b3b3</color>
+        <color name="color_divider">#eeeeee</color>
+        <color name="color_them_alpha">#FFFFCC</color>
+        <color name="color_bg_f0f0">#f0f0f0</color>
+
+        <color name="purple">#bb9af0</color>
+        <color name="red">#f18965</color>
+        <color name="yellow">#ffc24f</color>
+        <color name="grass">#9cc17b</color>
+        <color name="event_color_01">#59dbe0</color>
+        <color name="event_color_02">#f57f68</color>
+        <color name="event_color_03">#87d288</color>
+        <color name="event_color_04">#f8b552</color>
+        <color name="toolbar">#efefef</color>
+        <color name="toolbar_text">#8f000000</color>
+        <color name="accent">#2789e4</color>
+
+        <color name="black">#000000</color>
+        <color name="jet">#222222</color>
+        <color name="oil">#333333</color>
+        <color name="monsoon">#777777</color>
+        <color name="jumbo">#888888</color>
+        <color name="aluminum">#999999</color>
+        <color name="base">#AAAAAA</color>
+        <color name="iron">#CCCCCC</color>
+        <color name="white">#FFFFFF</color>
+
+        </resources>
+
