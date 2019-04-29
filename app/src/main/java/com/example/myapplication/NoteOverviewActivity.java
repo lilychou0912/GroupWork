@@ -189,12 +189,18 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
                             Sche.addAll(dBhelper.getSchedule());
                             myAdapter.notifyDataSetChanged();
                         }
+                        else{
+                            Toast.makeText(this, "每个行程的名字都应该是独一无二的~再想一个吧!", Toast.LENGTH_LONG).show();
+                        }
                     }
                     else{
                         if (dBhelper.updateSchedule(oldname, name, starttime,endtime)) {
                             Sche.clear();
                             Sche.addAll(dBhelper.getSchedule());
                             myAdapter.notifyDataSetChanged();
+                        }
+                        else{
+                            Toast.makeText(this, "每个行程的名字都应该是独一无二的~再想一个吧!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

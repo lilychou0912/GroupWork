@@ -2,23 +2,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MyActivity" >
-    <item android:id="@+id/action_publish"
-        android:title="@string/action_publish"
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"/>
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/action_day_view"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_draft"
+        android:title="@string/action_draft"
+        app:showAsAction= "always" />
+    <item
+        android:id="@+id/action_pic"
+        android:title="@string/action_pic"
+        app:showAsAction= "always" />
+    <item
+        android:id="@+id/action_publish"
+        android:title="@string/action_publish"
+        app:showAsAction= "always" />
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single"
+        android:visible="true">
+        <item
+            android:id="@+id/action_day_view"
             android:title="@string/action_day_view"
             android:orderInCategory="100"
-            app:showAsAction="ifRoom"/>
-        <item android:id="@+id/action_three_day_view"
-            android:title="@string/action_three_day_view"
-            android:orderInCategory="100"
-            app:showAsAction="ifRoom"
-            android:checked="true"/>
-        <item android:id="@+id/action_week_view"
+            app:showAsAction= "never"/>
+        <item
+            android:id="@+id/action_week_view"
             android:title="@string/action_week_view"
+            android:checked="true"
             android:orderInCategory="100"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction= "never"/>
     </group>
 </menu>

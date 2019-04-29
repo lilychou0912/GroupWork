@@ -1,20 +1,19 @@
 package com.example.myapplication;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.webkit.JsResult;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -26,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*********/
+        //Intent intent = new Intent(this, LoginActivity.class);
+        //startActivity(intent);
+        /*********/
         myWebView = (WebView) findViewById(R.id.mapWebview);
         //点击底部按钮
         bottomListener();
@@ -62,42 +65,65 @@ public class MainActivity extends AppCompatActivity {
         myWebView.getSettings().setDomStorageEnabled(true);
         //这样你就可以在返回前一个页面的时候不刷新了
     }
+   /**
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
-        //对底部按钮的响应
-        private void bottomListener() {
-            ImageButton NtOverviewBtn = (ImageButton) findViewById(R.id.button_edit);
-            ImageButton MapBtn = (ImageButton) findViewById(R.id.button_map);
-            ImageButton SearchBtn = (ImageButton) findViewById(R.id.button_search);
-            ImageButton CollectBtn = (ImageButton) findViewById(R.id.button_collect);
-            //给btn1绑定监听事件
-            NtOverviewBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 给bnt添加点击响应事件
-                    Intent intent = new Intent(MainActivity.this, NoteOverviewActivity.class);
-                    //启动
-                    startActivity(intent);
-                }
-            });
-            SearchBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 给bnt添加点击响应事件
-                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                    //启动
-                    startActivity(intent);
-                }
-            });
-            CollectBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 给bnt添加点击响应事件
-                    Intent intent = new Intent(MainActivity.this, CollectActivity.class);
-                    //启动
-                    startActivity(intent);
-                }
-            });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
+    }
+    **/
+
+    //对底部按钮的响应
+    private void bottomListener() {
+        ImageButton NtOverviewBtn = (ImageButton) findViewById(R.id.button_edit);
+        ImageButton MapBtn = (ImageButton) findViewById(R.id.button_map);
+        ImageButton SearchBtn = (ImageButton) findViewById(R.id.button_search);
+        ImageButton CollectBtn = (ImageButton) findViewById(R.id.button_collect);
+        //给btn1绑定监听事件
+        NtOverviewBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 给bnt添加点击响应事件
+                Intent intent = new Intent(MainActivity.this, NoteOverviewActivity.class);
+                //启动
+                startActivity(intent);
+            }
+        });
+        SearchBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 给bnt添加点击响应事件
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                //启动
+                startActivity(intent);
+            }
+        });
+        CollectBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 给bnt添加点击响应事件
+                Intent intent = new Intent(MainActivity.this, CollectActivity.class);
+                //启动
+                startActivity(intent);
+            }
+        });
+    }
 
     class WebAppInterface{
         Context mContext;

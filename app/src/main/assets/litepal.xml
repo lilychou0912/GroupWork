@@ -2,9 +2,10 @@
 <litepal>
     <dbname value="BookStore"></dbname>    <!--数据库名-->
 
-    <version value="1"></version>           <!--数据库版本号-->
+    <version value="2"></version>           <!--数据库版本号-->
 
     <list>
         <mapping class="com.example.myapplication.Schedule"></mapping>    <!--映射模型类-->
+        <mapping class="com.example.myapplication.ScheduleItem"></mapping>    <!--映射模型类-->
     </list>
 </litepal>

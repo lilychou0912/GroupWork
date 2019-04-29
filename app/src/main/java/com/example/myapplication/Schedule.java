@@ -1,23 +1,21 @@
 package com.example.myapplication;
 
 import org.litepal.crud.LitePalSupport;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Schedule extends LitePalSupport {
-    private int id = 0;
+    private long id = 0;
     private String name;
     private String starttime;
     private String endtime;
     private String imgUrl;
     private boolean isfinished = false;
+    private List<ScheduleItem> ItemList = new ArrayList<ScheduleItem>();
 
-    public int getId(){
-        return id;
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
+    public long getId(){return id;}
 
     public String getName(){
         return name;
@@ -55,5 +53,17 @@ public class Schedule extends LitePalSupport {
 
     public void setIsfinished(boolean isfinished){
         this.isfinished = isfinished;
+    }
+
+    public List<ScheduleItem> getItemList(){
+        return ItemList;
+    }
+
+    public void setItemList(List<ScheduleItem> ItemList){
+        if (this.ItemList.size() > 0){
+            this.ItemList.clear();
+        }
+        this.ItemList.addAll(ItemList);
+
     }
 }
