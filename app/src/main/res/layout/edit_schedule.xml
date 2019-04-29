@@ -78,9 +78,10 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/se_start_time"
+                android:id="@+id/start_time_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:padding="8dp"
                 android:textSize="16sp"
                 android:textColor="#666666"/>
@@ -102,9 +103,10 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/se_end_time"
+                android:id="@+id/end_time_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:padding="8dp"
                 android:textColor="#666666"
                 android:textSize="16sp" />
