@@ -38,10 +38,13 @@ dependencies {
     implementation project(':library')
     implementation 'com.jakewharton:butterknife:9.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0'
+<<<<<<< HEAD
     implementation 'cn.bmob.android:bmob-sdk:3.5.5'
     implementation 'com.lzy.widget:ninegridview:0.2.0'
 
     implementation 'com.lzy.widget:imagepicker:+'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
+=======
+>>>>>>> cde897716bf42f7ef9eb4454bb99fcbd7dc944ef
 }

@@ -16,13 +16,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity android:name="com.example.myapplication.ui.MainActivity">
+=======
+        <activity android:name=".MainActivity">
+>>>>>>> cde897716bf42f7ef9eb4454bb99fcbd7dc944ef
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity android:name="com.example.myapplication.ui.NoteOverviewActivity">
         </activity>
         <activity android:name="com.example.myapplication.ui.SignupActivity"/>
@@ -34,6 +39,17 @@
         <activity android:name="com.example.myapplication.ui.CollectActivity">
         </activity>
         <activity android:name="com.example.myapplication.ui.SearchActivity">
+=======
+        <activity android:name=".NoteOverviewActivity">
+        </activity>
+        <activity android:name=".DateSelectActivity">
+        </activity>
+        <activity android:name=".NoteEditActivity">
+    </activity>
+        <activity android:name=".CollectActivity">
+        </activity>
+        <activity android:name=".SearchActivity">
+>>>>>>> cde897716bf42f7ef9eb4454bb99fcbd7dc944ef
         </activity>
     </application>
 

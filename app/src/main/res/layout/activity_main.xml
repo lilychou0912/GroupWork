@@ -6,7 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+<<<<<<< HEAD
     tools:context="com.example.myapplication.ui.MainActivity">
+=======
+    tools:context=".MainActivity">
+>>>>>>> cde897716bf42f7ef9eb4454bb99fcbd7dc944ef
 
     <include layout="@layout/activity_bottom_navigation"
         android:id="@+id/menu"/>
