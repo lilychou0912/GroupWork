@@ -1,0 +1,111 @@
+<html>
+<meta charset="utf-8">
+<link rel='stylesheet'  href='../css/jquery-jvectormap.css' type='text/css' media='all' charset="utf-8" />
+<link rel='stylesheet'  href='../css/jquery-ui.css' type='text/css' media='all' charset="utf-8" />
+<script type='text/javascript' src='../js/jquery-1.8.2.js' charset="utf-8"></script>
+<script type='text/javascript' src='../js/jquery-ui.js' charset="utf-8"></script>
+<script type='text/javascript' src='../js/jquery.jvectormap.min.js' charset="utf-8"></script>
+<script type='text/javascript' src='../js/jquery-jvectormap.js' charset="utf-8"></script>
+<script type='text/javascript' src='../js/jquery-jvectormap-world-mill-en.js' charset="utf-8"></script>
+<script type='text/javascript' src='../js/region.js' charset="utf-8"></script>
+<script type="text/javascript" src="../js/jquery-mousewheel.js"></script>
+<script type="text/javascript" src="../js/abstract-element.js"></script>
+<script type="text/javascript" src="../js/abstract-canvas-element.js"></script>
+<script type="text/javascript" src="../js/abstract-shape-element.js"></script>
+<script type="text/javascript" src="../js/svg-element.js"></script>
+<script type="text/javascript" src="../js/svg-group-element.js"></script>
+<script type="text/javascript" src="../js/svg-canvas-element.js"></script>
+<script type="text/javascript" src="../js/svg-shape-element.js"></script>
+<script type="text/javascript" src="../js/svg-path-element.js"></script>
+<script type="text/javascript" src="../js/svg-circle-element.js"></script>
+<script type="text/javascript" src="../js/vml-element.js"></script>
+<script type="text/javascript" src="../js/vml-group-element.js"></script>
+<script type="text/javascript" src="../js/vml-canvas-element.js"></script>
+<script type="text/javascript" src="../js/vml-shape-element.js"></script>
+<script type="text/javascript" src="../js/vml-path-element.js"></script>
+<script type="text/javascript" src="../js/vml-circle-element.js"></script>
+<script type="text/javascript" src="../js/vector-canvas.js"></script>
+<script type="text/javascript" src="../js/simple-scale.js"></script>
+<script type="text/javascript" src="../js/numeric-scale.js"></script>
+<script type="text/javascript" src="../js/ordinal-scale.js"></script>
+<script type="text/javascript" src="../js/color-scale.js"></script>
+<script type="text/javascript" src="../js/data-series.js"></script>
+<script type="text/javascript" src="../js/proj.js"></script>
+<script type="text/javascript" src="../js/pushbutton.min.js"></script>
+
+<script>
+$(function () {
+var map,
+map = new jvm.Map({
+map: 'world_mill_en',
+container: $('#world-map'),
+backgroundColor: "transparent",
+regionStyle: {
+initial: {
+fill: '#e4e4e4',
+"fill-opacity": 1,
+stroke: 'white',
+"stroke-width": 1,
+"stroke-opacity": 1
+}
+},
+markers: [],
+series: {
+      regions: [{
+        scale: {
+            '去过': '#abcb1e',
+            '想去': '#edb264',
+            '无标记': '#e4e4e4',
+          },
+        attribute: 'fill',
+        normalizeFunction: 'polynomial',
+        legend: {
+          horizontal: true,
+          title: '我的标记'
+        }
+      }],
+    },
+onRegionClick: function(event, code){
+var pub = new Pushbutton('#pushbutton', {
+            data: [
+                {text:'去过'},
+                {text:'想去'},
+                {text:'删除标记'}
+            ],
+            // 点击回调 返回true 则不隐藏弹出框
+            onClick: function( e ) {
+                // 返回主要有用数据
+                // e.target  当前dom节点
+                // e.data  当前点击的data
+                // e.index  当前点击的选择是第几个
+                if (e.index ==0){
+                    var josnStr = "{" + code + ":'去过'}";
+                    map.series.regions[0].setValues(eval('(' + josnStr + ')'));
+                    return true;
+                }
+                else if(e.index ==1){
+                    var josnStr = "{" + code + ":'想去'}";
+                    map.series.regions[0].setValues(eval('(' + josnStr + ')'));
+                    return true;
+                 }
+                 else if(e.index ==2){
+                    var josnStr = "{" + code + ":'无标记'}";
+                    map.series.regions[0].setValues(eval('(' + josnStr + ')'));
+                    return true;
+                 }
+                return false;
+            },
+            // maxHeight: 100,  // 默认显示的高度
+            isShow: true,   // 默认是否显示
+        });
+        pub.show();
+        pub.refresh();
+},
+});
+});
+</script>
+<div id="world-map" style="height: 100%; width: 100%;"></div>
+<section id="pushbutton"></section>
+</div>
+
+</html>
