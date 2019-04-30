@@ -3,19 +3,34 @@ package com.example.myapplication;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.loader.ImageLoader;
+import com.lzy.imagepicker.ui.ImageGridActivity;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ScheduleEdit extends Activity implements View.OnClickListener,TimePicker.OnTimeChangedListener{
@@ -28,6 +43,11 @@ public class ScheduleEdit extends Activity implements View.OnClickListener,TimeP
     private int Syear, Smonth, Sday, Eyear, Emonth, Eday, Shour, Ssecond, Ehour, Esecond;
     private StringBuffer Scal, Ecal;
     private String starttime, endtime;
+    /*******************************/
+    private GridAdapter gridAdapter;
+    private GridView publishGridView;
+    private ArrayList<ImageItem> imageItems;
+    private int size = 0;
     /*******************************/
 
     @Override
@@ -52,6 +72,12 @@ public class ScheduleEdit extends Activity implements View.OnClickListener,TimeP
 
         //对edit 进行焦点监听
         tagText.setOnFocusChangeListener((View.OnFocusChangeListener) this);
+
+        /************/
+        publishGridView= (GridView) findViewById(R.id.publishGridView);
+        gridAdapter = new GridAdapter();
+        publishGridView.setAdapter(gridAdapter);
+        /************/
     }
 
     //@Override
@@ -196,6 +222,104 @@ public class ScheduleEdit extends Activity implements View.OnClickListener,TimeP
     private void get_endtime(){
         endtime = EtvTime.getText().toString();
     }
+
+    /************************************************************/
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            if (data != null && requestCode == 100) {
+                ArrayList<ImageDecoder.ImageInfo> imageInfo = new ArrayList<>();
+                imageItems = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                gridAdapter.notifyDataSetChanged();
+                size=imageItems.size();
+            } else {
+                toast("没有选择图片");
+            }
+        }
+    }
+    private class GridAdapter extends BaseAdapter {
+        public GridAdapter() {
+        }
+
+        @Override
+        public int getCount() {
+            if (imageItems == null)
+                return 1;
+            else
+                return imageItems.size()+1;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return imageItems.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(final int i, View view, ViewGroup viewGroup) {
+            GridAdapter.ViewHolder holder = null;
+            if (view == null) {
+                holder = new GridAdapter.ViewHolder();
+                view = LayoutInflater.from(EditActivity.this).inflate(R.layout.grid_layout, null);
+                holder.image_voice = (ImageView) view.findViewById(R.id.gird_img);
+                view.setTag(holder);
+            } else {
+                holder = (GridAdapter.ViewHolder) view.getTag();
+            }
+            if (imageItems == null) {
+                holder.image_voice.setImageResource(R.mipmap.add_icon);
+            } else {
+                if (i == imageItems.size()) {
+                    holder.image_voice.setImageResource(R.mipmap.add_icon);
+                } else {
+                    File file = new File(imageItems.get(i).path);
+                    if (file.exists()) {
+                        Bitmap bm = BitmapFactory.decodeFile(imageItems.get(i).path);
+                        holder.image_voice.setImageBitmap(CircleTransform.centerSquareScaleBitmap(bm,100));
+                    }
+                }
+            }
+            holder.image_voice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if ((imageItems != null && i == imageItems.size()) || imageItems == null) {
+                        addImage();
+                    }
+                }
+            });
+            return view;
+        }
+
+        class ViewHolder {
+            private ImageView image_voice;
+        }
+    }
+    /**
+     * 添加图片
+     */
+    private void addImage() {
+        ImagePicker imagePicker = ImagePicker.getInstance();
+        imagePicker.setImageLoader(new ImageLoader());
+        imagePicker.setMultiMode(true);   //多选
+        imagePicker.setShowCamera(true);  //显示拍照按钮
+        imagePicker.setSelectLimit(4);    //最多选择X张
+        imagePicker.setCrop(false);       //不进行裁剪
+        Intent intent = new Intent(EditActivity.this, ImageGridActivity.class);
+        startActivityForResult(intent, 100);
+    }
+
+    //Toast
+    private void toast(String date){
+        Toast.makeText(this, date, Toast.LENGTH_SHORT).show();
+    }
+    /************************************************************/
+
+
     /**
      * 设置背景透明度
      * @param f
@@ -215,7 +339,5 @@ public class ScheduleEdit extends Activity implements View.OnClickListener,TimeP
             backgroundAlpha(1f);
         }
     }
-
-/*******************************/
 
 }
