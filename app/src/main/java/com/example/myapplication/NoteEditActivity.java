@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
@@ -109,6 +111,8 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
 
+        //初始化events
+        events.clear();
         //初始化界面，载入已建立行程事件
         initScheduleItem();
         //设置初始化显示天数
@@ -244,12 +248,45 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        alertDialogBuilder.setTitle("提示");
+        alertDialogBuilder
+                .setMessage("你确定要删除这个行程安排吗？");
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                events.remove(event);
+                dBhelper.deleteScheduleItme(getEventTitle(event.getStartTime()));
+                events.clear();
+                initScheduleItem();
+                mWeekView.notifyDatasetChanged();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // if this button is clicked, just close
+                // the dialog box and do nothing
+                dialog.cancel();
+            }
+        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
     }
 
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ScheduleEdit.class);
+        ScheduleItem item = dBhelper.findItem(getEventTitle(event.getStartTime()));
+        intent.putExtra("name_extra", item.getIname());
+        intent.putExtra("startTime_extra", item.getIstarttime());
+        intent.putExtra("endTime_extra", item.getIendtime());
+        intent.putExtra("category_extra", item.getIcategory());
+        intent.putExtra("discription_extra", item.getIdiscription());
+        intent.putExtra("color_extra", item.getIcolor());
+        startActivity(intent);
     }
 
     @Override
@@ -263,24 +300,23 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
 
     @Override
     public void onEmptyViewClicked(Calendar date) {
-        Toast.makeText(this, "Empty view" + " clicked: " + getEventTitle(date), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "再点一次就可以创建行程安排哟~", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAddEventClicked(Calendar startTime, Calendar endTime) {
+        String name = null;
         Sstart = (Calendar) startTime.clone();
         Send = (Calendar) endTime.clone();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String s = sdf.format(startTime.getTime());
         String e = sdf.format(endTime.getTime());
-        ScheduleItem item = dBhelper.addScheduleItem(getEventTitle(startTime), getEventTitle(startTime), s, e, getEventTitle(startTime), getEventTitle(startTime), getEventTitle(startTime));
             //启动
-            Log.d("ccc",item.getIstarttime().toString());
             Intent intent = new Intent(NoteEditActivity.this, ScheduleEdit.class);
+            intent.putExtra("name_extra", name);
+            intent.putExtra("startTime_extra", s);
+            intent.putExtra("endTime_extra", e);
             startActivity(intent);
-
-            Toast.makeText(this, "Add event clicked", Toast.LENGTH_LONG).show();
-
     }
 
     @Override
@@ -332,8 +368,14 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
             }
 
             String name = sItem.get(i).getIcategory() + '\n' + sItem.get(i).getIstarttime().substring(12,16) + "-" + sItem.get(i).getIendtime().substring(12,16);
+            int Colour = 0;
 
-            int Colour = Color.parseColor(sItem.get(i).getIcolor());
+            try{
+                Colour = Color.parseColor(sItem.get(i).getIcolor());
+            }catch(IllegalArgumentException e1){
+                dBhelper.deleteScheduleItme(getEventTitle(Scalendar));
+                Toast.makeText(this,"这次新建出现了一些问题，请再试一次哟~", Toast.LENGTH_LONG).show();
+            }
             WeekViewEvent event = new WeekViewEvent(idset++, name, Scalendar, Ecalendar);
 
             event.setColor(Colour);

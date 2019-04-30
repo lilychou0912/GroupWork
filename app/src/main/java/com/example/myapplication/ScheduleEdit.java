@@ -46,10 +46,16 @@ public class ScheduleEdit extends Activity {
     private ListPopupWindow listPopupWindow;
     private EditText tagText, mText;
     private TextView ok, cancel, start, end;
+    private String oldname;
     private String Sstarttime, Sendtime;
+    private String oldStartTime, oldEndTime;
+    private String oldCategory;
+    private String oldDiscription;
+    private String oldColor;
     private String category;
     private String color = "#ffffff";
     private int choice;
+    private int flag = 1;
     private String discription;
     private DBhelper dBhelper = new DBhelper();
 
@@ -57,42 +63,22 @@ public class ScheduleEdit extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_schedule);
-        /**
-         Sstarttime = (String) getIntent().getSerializableExtra("starttime_extra");
-         Sendtime = (String) getIntent().getSerializableExtra("endtime_extra");
-         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-         Date Sdate = null;
-         try {
-         Sdate = sdf.parse(Sstarttime);
-         } catch (ParseException e) {
-         e.printStackTrace();
-         }
-         Calendar startTime = Calendar.getInstance();
-         startTime.setTime(Sdate);
-
-         Date Edate = null;
-         try {
-         Edate = sdf.parse(Sendtime);
-         } catch (ParseException e) {
-         e.printStackTrace();
-         }
-         Calendar endTime = Calendar.getInstance();
-         endTime.setTime(Edate);
-         **/
+        /*日程类型*/
+        tagText = (EditText) findViewById(R.id.tag_edit);
+        /*输入的文字*/
+        mText = (EditText) findViewById(R.id.text_edit);
         ok = (TextView) findViewById(R.id.se_ok);
         cancel = (TextView) findViewById(R.id.se_cancel);
-        start = (TextView) findViewById(R.id.se_start_time);
-        end = (TextView) findViewById(R.id.se_end_time);
+        start = (TextView) findViewById(R.id.start_time_picker);
+        end = (TextView) findViewById(R.id.end_time_picker);
 
+        //初始化（更改情况）
+        initData();
         //按下确认键
         okListener();
         //按下取消键
         cancelListener();
 
-        /*日程类型*/
-        tagText = (EditText) findViewById(R.id.tag_edit);
-        /*输入的文字*/
-        mText = (EditText) findViewById(R.id.tag_edit);
 
         tagText.setOnFocusChangeListener(new View.OnFocusChangeListener() { //对edit 进行焦点监听
             @Override
@@ -149,12 +135,20 @@ public class ScheduleEdit extends Activity {
                     color = "#ffe47a";
                 }
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String s = sdf.format(Sstart.getTime());
-                String e = sdf.format(Send.getTime());
-                //更新行程事件
+                //新建行程事件
                 if (!discription.equals("") && category != null && Sstart!=null && Send!=null){
-                    if (dBhelper.updateScheduleItme(getEventTitle(Sstart),discription, s, e, category, null, color)!=null) {
-                        finish();
+                    if(oldname == null){
+                        String s = sdf.format(Sstart.getTime());
+                        String e = sdf.format(Send.getTime());
+                        if(dBhelper.addScheduleItem(getEventTitle(Sstart), category, s, e, discription, null, color) != null){
+                            flag = 1;
+                            finish();
+                        }
+                    }else {
+                        if (dBhelper.updateScheduleItme(oldname, category, start.getText().toString(), end.getText().toString(), discription, null, oldColor) != null) {
+                            flag = -1;
+                            finish();
+                        }
                     }
 
                 }
@@ -167,6 +161,10 @@ public class ScheduleEdit extends Activity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //清除为未创建成功的安排
+                if(flag == 1) {
+                    dBhelper.deleteScheduleItme(getEventTitle(Sstart));
+                }
                 //返回日程日历界面
                 finish();
             }
@@ -177,6 +175,8 @@ public class ScheduleEdit extends Activity {
     private void getInput(){
         get_category();
         get_discription();
+        get_startTime();
+        get_endTime();
     }
 
     //获取事件类型
@@ -186,6 +186,34 @@ public class ScheduleEdit extends Activity {
     //获取事件描述
     private void get_discription(){
         discription = mText.getText().toString();
+    }
+    //获取事件开始时间
+    private void get_startTime(){ Sstarttime = start.getText().toString(); }
+    //获取事件结束时间
+    private void get_endTime() {
+        Sendtime = end.getText().toString();
+    }
+
+    //设置初始数据
+    private void initData() {
+        Intent intent = getIntent();
+        oldStartTime = intent.getStringExtra("startTime_extra");
+        oldEndTime = intent.getStringExtra("endTime_extra");
+        oldCategory  = intent.getStringExtra("category_extra");
+        oldDiscription = intent.getStringExtra("discription_extra");
+        oldname = intent.getStringExtra("name_extra");
+        oldColor = intent.getStringExtra("color_extra");
+
+        if(oldStartTime != null){
+            try {
+                tagText.setText(oldCategory);
+                mText.setText(oldDiscription);
+                start.setText(oldStartTime);
+                end.setText(oldEndTime);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //为每个行程事件生成名字
