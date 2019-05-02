@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:gravity="center_horizontal"
+    android:layout_marginLeft="55dp"
+    android:layout_marginRight="55dp"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/remainder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="30dp"
+        android:text="确定删除“到此一游”吗？"
+        android:textColor="#666666"
+        android:textSize="18sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/time_pick_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:text="取消"
+            android:textColor="#cccccc"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/time_pick_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:text="确定"
+            android:textColor="#abcb1e"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</LinearLayout>
