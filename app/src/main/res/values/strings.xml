@@ -1,0 +1,15 @@
+<resources>
+    <!--MainActivity-->
+    <string name="app_name">test</string>
+    <string name="tab_rb_map">map</string>
+    <string name="tab_rb_edit">edit</string>
+    <string name="tab_rb_collect">collect</string>
+    <string name="action_week_view">多视图</string>
+    <string name="action_day_view">日视图</string>
+    <string name="action_publish">分享</string>
+    <string name="action_pic">生成长图</string>
+    <string name="action_draft">保存</string>
+    <string name="async_error">Could not download events from the internet</string>
+    <string name="drag_me">Drag Me</string>
+</resources>
+
