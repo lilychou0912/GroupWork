@@ -569,7 +569,7 @@ public class WeekView extends View {
         // Set default event color.
         mDefaultEventColor = Color.parseColor("#9fc6e7");
         // Set default empty event color.
-        mNewEventColor = Color.parseColor("#3c93d9");
+        mNewEventColor = Color.parseColor("#b4b09e");
 
         mScaleDetector = new ScaleGestureDetector(mContext, new WeekViewGestureListener());
     }
@@ -1204,7 +1204,7 @@ public class WeekView extends View {
     private void drawEmptyImage(WeekViewEvent event, RectF rect, Canvas canvas, float originalTop, float originalLeft) {
         int size = Math.max(1, (int) Math.floor(Math.min(0.8 * rect.height(), 0.8 * rect.width())));
         if (mNewEventIconDrawable == null)
-            mNewEventIconDrawable = getResources().getDrawable(android.R.drawable.ic_input_add);
+            mNewEventIconDrawable = getResources().getDrawable(R.drawable.add);
         Bitmap icon = ((BitmapDrawable) mNewEventIconDrawable).getBitmap();
         icon = Bitmap.createScaledBitmap(icon, size, size, false);
         canvas.drawBitmap(icon, originalLeft + (rect.width() - icon.getWidth()) / 2, originalTop + (rect.height() - icon.getHeight()) / 2, new Paint());

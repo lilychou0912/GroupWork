@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:gravity="center_vertical"
-        android:padding="12dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/se_cancel"
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:padding="20dp">
 
         <EditText
             android:id="@+id/tag_edit"
@@ -62,7 +62,7 @@
         android:id="@+id/se_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:padding="20dp"
         android:layout_centerHorizontal="true">
         <LinearLayout
             android:id="@+id/start_time"
@@ -115,7 +115,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.CardView
-        android:layout_width="360dp"
+        android:layout_width="wrap_content"
         android:layout_height="180dp"
         app:cardBackgroundColor="#fdffdf"
         app:cardCornerRadius="10dp"
@@ -138,13 +138,14 @@
 
     </android.support.v7.widget.CardView>
 
+
     <!--展示上传的图片-->
     <GridView
-        android:id="@+id/publishGridView"
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:columnWidth="60dp"
+        android:columnWidth="100dp"
         android:horizontalSpacing="10dp"
         android:numColumns="auto_fit"
         android:verticalSpacing="10dp" />

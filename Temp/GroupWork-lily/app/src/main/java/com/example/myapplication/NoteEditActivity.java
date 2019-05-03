@@ -2,20 +2,29 @@ package com.example.myapplication;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewDebug;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +33,10 @@ import com.guojunustb.library.MonthLoader;
 import com.guojunustb.library.WeekView;
 import com.guojunustb.library.WeekViewEvent;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +62,19 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
     private WeekView mWeekView;
     private List<WeekViewEvent> events = new ArrayList<>();;
     private List<WeekViewEvent> matchedEvents;
+    /*********/
+    private RelativeLayout pictureView;
+    private View contentView;
+    private RecyclerView pRecyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private PictureAdapter pAdapter;
+    private List<WeekViewEvent> pEvent;
+
+    FileOutputStream out;
+    String bitmapName = "longpicture.jpg";
+    File file;
+    String TravelFilePath;
+    /*********/
     private List<ScheduleItem> sItem;
     private DBhelper dBhelper = new DBhelper();
 
@@ -58,6 +84,10 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
         setContentView(R.layout.edit_note);
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
+        /************************************************************************/
+        contentView = LayoutInflater.from(NoteEditActivity.this).inflate(R.layout.long_picture, null);
+        pRecyclerView = contentView.findViewById(R.id.pic_recyclerview);
+        /************************************************************************/
         TextView draggableView = (TextView) findViewById(R.id.draggable_view);
         draggableView.setOnLongClickListener(new DragTapListener());
         sId = (int) getIntent().getSerializableExtra("sId_extra");
@@ -118,12 +148,14 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
         events.clear();
         //初始化界面，载入已建立行程事件
         initScheduleItem();
+        //初始化Recyclerview
+        initRecycle();
         //设置初始化显示天数
         long diffDays = (mWeekView.getMaxDate().getTimeInMillis() - mWeekView.getMinDate().getTimeInMillis()) / (1000 * 60 * 60 * 24);
-        if (diffDays < 7) {
+        if (diffDays < 4) {
             mWeekView.setNumberOfVisibleDays(Integer.parseInt(String.valueOf(diffDays)) + 1);
         } else {
-            mWeekView.setNumberOfVisibleDays(7);
+            mWeekView.setNumberOfVisibleDays(4);
         }
 
     }
@@ -167,8 +199,25 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
             case R.id.action_publish:
 
                 return true;
-            case R.id.action_pic:
+            case R.id.action_pic://生成长图
+                if (sItem != null) {
+                    //setContentView(R.layout.long_picture);
+                    layoutManager = new LinearLayoutManager(this);
+                    pRecyclerView.setLayoutManager(layoutManager);
+                    // 获取数据，向适配器传数据，绑定适配器
+                    pAdapter = new PictureAdapter(this, sItem);
+                    pRecyclerView.setAdapter(pAdapter);
+                    pRecyclerView.setHasFixedSize(true);
+                    pAdapter.notifyDataSetChanged();
 
+                    Intent intent = new Intent(NoteEditActivity.this, LongPicture.class);
+                    //启动
+                    startActivity(intent);
+                    // 添加动画
+                    //pRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                    pictureView = contentView.findViewById(R.id.long_pic);
+                    saveBitmap(getRelativeLayoutBitmap(pictureView));
+                }
                 return true;
             case R.id.action_draft:
 
@@ -190,10 +239,10 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
                     item.setChecked(!item.isChecked());
                     mWeekViewType = TYPE_WEEK_VIEW;
                     long diffDays = (mWeekView.getMaxDate().getTimeInMillis() - mWeekView.getMinDate().getTimeInMillis()) / (1000 * 60 * 60 * 24);
-                    if (diffDays < 7) {
+                    if (diffDays < 4) {
                         mWeekView.setNumberOfVisibleDays(Integer.parseInt(String.valueOf(diffDays)) + 1);
                     } else {
-                        mWeekView.setNumberOfVisibleDays(7);
+                        mWeekView.setNumberOfVisibleDays(4);
                     }
 
                     // Lets change some dimensions to best fit the view.
@@ -251,6 +300,21 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
+        Intent intent = new Intent(this, ScheduleEdit.class);
+        ScheduleItem item = dBhelper.findItem(getEventTitle(event.getStartTime()), sId);
+        intent.putExtra("sId_extra", sId);
+        intent.putExtra("name_extra", item.getIname());
+        intent.putExtra("startTime_extra", item.getIstarttime());
+        intent.putExtra("endTime_extra", item.getIendtime());
+        intent.putExtra("category_extra", item.getIcategory());
+        intent.putExtra("discription_extra", item.getIdiscription());
+        intent.putExtra("color_extra", item.getIcolor());
+        startActivity(intent);
+
+    }
+    /****/
+    @Override
+    public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
         alertDialogBuilder.setTitle("提示");
@@ -278,21 +342,7 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
         // show it
         alertDialog.show();
     }
-
-    @Override
-    public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
-        Intent intent = new Intent(this, ScheduleEdit.class);
-        ScheduleItem item = dBhelper.findItem(getEventTitle(event.getStartTime()), sId);
-        intent.putExtra("sId_extra", sId);
-        intent.putExtra("name_extra", item.getIname());
-        intent.putExtra("startTime_extra", item.getIstarttime());
-        intent.putExtra("endTime_extra", item.getIendtime());
-        intent.putExtra("category_extra", item.getIcategory());
-        intent.putExtra("discription_extra", item.getIdiscription());
-        intent.putExtra("color_extra", item.getIcolor());
-        startActivity(intent);
-    }
-
+    /****/
     @Override
     public void onEmptyViewLongPress(Calendar time) {
         Toast.makeText(this, "Empty view long pressed: " + getEventTitle(time), Toast.LENGTH_SHORT).show();
@@ -408,8 +458,81 @@ public class NoteEditActivity extends AppCompatActivity implements WeekView.Even
 
     }
 
+    private void initRecycle() {
+        RecyclerView.LayoutManager layoutManager;
+        layoutManager = new LinearLayoutManager(this);
+        pRecyclerView.setLayoutManager(layoutManager);
+        pAdapter = new PictureAdapter(this, sItem);
+        pRecyclerView.setAdapter(pAdapter);
+        pRecyclerView.setHasFixedSize(true);
+
+    }
+
+    public static Bitmap getRelativeLayoutBitmap(RelativeLayout rLayout) {
+        int h = 0;
+        // 获取RelativeLayout实际高度
+        for (int i = 0; i < rLayout.getChildCount(); i++) {
+            rLayout.getChildAt(i).measure(0, 0);
+            h += rLayout.getChildAt(i).getMeasuredHeight();
+        }
+        rLayout.measure(0, 0);
+        // 创建相应大小的bitmap
+        Bitmap bitmap = Bitmap.createBitmap(rLayout.getMeasuredWidth(), h, Bitmap.Config.RGB_565);
+        final Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.WHITE);
+        rLayout.draw(canvas);
+        if (bitmap == null) {
+            Log.d("空","dijduthfdiuhgfiuko");
+        }
+        return bitmap;
+    }
+
+    /*生成长图的方法*/
+    public static Bitmap getViewDrawingCacheBitmap(View view) {
+        view = view.getRootView();
+        if (!view.isDrawingCacheEnabled()) {
+            view.setDrawingCacheEnabled(true);
+        }
+        view.destroyDrawingCache();
+        view.buildDrawingCache();
+        Bitmap bm = view.getDrawingCache();
+        view.setDrawingCacheEnabled(false);
+
+        if (bm == null) {
+            Log.d("df","dijduthfdiuhgfiuko");
+        }
+        return bm;
+    }
+
+    //保存获取的bitmap图片
+    public void saveBitmap(Bitmap bmp) {
+
+        try { // 获取SDCard指定目录下
+            String sdCardDir = Environment.getExternalStorageDirectory() + "/travel1U/";
+            File dirFile = new File(sdCardDir);  //目录转化成文件夹
+            if (!dirFile.exists()) {              //如果不存在，那就建立这个文件夹
+                dirFile.mkdirs();
+            }                          //文件夹有啦，就可以保存图片啦
+            file = new File(sdCardDir, bitmapName);// 在SDcard的目录下创建图片文,以当前时间为其命名
+            out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+//            System.out.println("_________保存到____sd______指定目录文件夹下____________________");
+            Log.e("saveBitMap", "saveBitmap: 图片保存到" + Environment.getExternalStorageDirectory() + "/travel1U/" + "00");
+            TravelFilePath = Environment.getExternalStorageDirectory() + "/travel1U/" + "00";
+//            showShare(QQFilePath);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        Toast.makeText(HahItemActivity.this,"保存已经至"+Environment.getExternalStorageDirectory()+"/CoolImage/"+"目录文件夹下", Toast.LENGTH_SHORT).show();
+    }
+
     //初始化行程事件
     private void initScheduleItem(){
         sItem = dBhelper.getScheduleItme(sId);
+        //Log.d("sss",String.valueOf(sId));
     }
     }

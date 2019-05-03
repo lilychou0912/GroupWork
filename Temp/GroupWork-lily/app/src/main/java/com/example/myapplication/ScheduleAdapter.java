@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+//import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.Glide;
 
@@ -119,14 +123,34 @@ class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
         holder.sDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = holder.sName.getText().toString();
-                mSchedule.remove(holder.getAdapterPosition());
-                notifyItemRemoved(holder.getAdapterPosition());
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
+                alertDialogBuilder.setTitle("提示");
+                alertDialogBuilder
+                        .setMessage("你确定要删除整个游记吗？");
+                alertDialogBuilder.setCancelable(false);
+                alertDialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String name = holder.sName.getText().toString();
+                        mSchedule.remove(holder.getAdapterPosition());
+                        notifyItemRemoved(holder.getAdapterPosition());
 
-                dBhelper.deleteSchedule(name);
-                //删除动画
-                notifyItemRemoved(position);
-                notifyDataSetChanged();
+                        dBhelper.deleteSchedule(name);
+                        //删除动画
+                        notifyItemRemoved(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
             }
         });
     }
@@ -179,8 +203,6 @@ class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
             sImage = itemView.findViewById(R.id.s_pic);
             sName = itemView.findViewById(R.id.s_title);
             sDuration = itemView.findViewById(R.id.s_duration);
-            sPublish = itemView.findViewById(R.id.s_publish);
-            sPicture = itemView.findViewById(R.id.s_picture);
             sDelete = itemView.findViewById(R.id.s_delete);
             sCardView = itemView.findViewById(R.id.note_view);
 

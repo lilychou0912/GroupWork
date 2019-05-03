@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     tools:context=".NoteEditActivity">
 
     <TextView
@@ -32,15 +33,15 @@
         app:dayBackgroundColor="#05000000"
         app:todayBackgroundColor="#1848adff"
         app:headerColumnBackground="#ffffffff"
-        app:todayHeaderTextColor="@color/accent"/>
+        app:todayHeaderTextColor="#abcb1e"/>
 
     <TextView
         android:id="@+id/draggable_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#ffff0000"
+        android:background="#abcb1e"
         android:padding="3dp"
-        android:text="@string/drag_me"
+        android:text="呵呵哒"
         android:textColor="@android:color/white" />
 
 

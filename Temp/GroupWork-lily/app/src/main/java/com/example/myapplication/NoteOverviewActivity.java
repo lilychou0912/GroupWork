@@ -79,7 +79,7 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 // 给bnt添加点击响应事件
-                Intent intent =new Intent(NoteOverviewActivity.this,MainActivity.class);
+                Intent intent =new Intent(NoteOverviewActivity.this,MapActivity.class);
                 //启动
                 startActivity(intent);
             }
@@ -312,8 +312,9 @@ public class NoteOverviewActivity extends Activity implements View.OnClickListen
 
     private void initRecycle() {
         //纵向滑动
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        RecyclerView.LayoutManager layoutManager;
+        layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
         // 获取数据，向适配器传数据，绑定适配器
         myAdapter = new ScheduleAdapter(this,Sche);
         mRecyclerView.setAdapter( myAdapter);

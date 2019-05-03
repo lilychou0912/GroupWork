@@ -13,14 +13,14 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:cardBackgroundColor="#f8f8ff">
+        app:cardBackgroundColor="#fff">
 
         <!--点击map的id-->
         <ImageButton
             android:id="@+id/button_map"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="#f8f8ff"
+            android:background="#fff"
             android:layout_marginTop="13dp"
             android:scaleType="fitCenter"
             android:src="@drawable/map" />
@@ -31,13 +31,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:cardBackgroundColor="#f8f8ff">
+        app:cardBackgroundColor="#fff">
 
         <ImageButton
             android:id="@+id/button_edit"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="#f8f8ff"
+            android:background="#fff"
             android:layout_marginTop="13dp"
             android:scaleType="fitCenter"
             android:src="@drawable/edit"/>
@@ -48,13 +48,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:cardBackgroundColor="#f8f8ff">
+        app:cardBackgroundColor="#fff">
 
         <ImageButton
             android:id="@+id/button_search"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="#f8f8ff"
+            android:background="#fff"
             android:layout_marginTop="13dp"
             android:scaleType="fitCenter"
             android:src="@drawable/search"/>
@@ -65,13 +65,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:cardBackgroundColor="#f8f8ff">
+        app:cardBackgroundColor="#fff">
 
         <ImageButton
             android:id="@+id/button_collect"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="#f8f8ff"
+            android:background="#fff"
             android:layout_marginTop="13dp"
             android:scaleType="fitCenter"
             android:src="@drawable/collect"/>

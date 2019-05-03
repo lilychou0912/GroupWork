@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -14,29 +16,73 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+
+import static cn.bmob.v3.Bmob.*;
+
 
 public class LoginActivity extends AppCompatActivity {
+
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @BindView(R.id.input_email) EditText _emailText;
+
+    @BindView(R.id.input_number) EditText _numberText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
     @BindView(R.id.link_signup) TextView _signupLink;
+
+    private String number;
+    private String password;
+
+    private SharedPreferences.Editor editor;
+    private SharedPreferences pref;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        
-        _loginButton.setOnClickListener(new View.OnClickListener() {
 
+        init();
+
+        LoginListener();
+
+        RegisterListener();
+    }
+
+    //对登录按钮的响应
+    private void LoginListener(){
+        //对"登录按钮的响应，跳转至待办页面
+        _loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                login();
+            public void onClick(View v){
+
+                String user = _numberText.getText().toString();
+                String passw = _passwordText.getText().toString();
+
+                MyUser users = BmobUser.getCurrentUser(MyUser.class);
+
+                if (users.getMobilePhoneNumber().equals(user) && users.getReEnterPassword().equals(passw)) {
+                    Toast.makeText(LoginActivity.this, "登录成功~", Toast.LENGTH_SHORT).show();
+                    editor.putBoolean("isLogin", true);
+                    editor.apply();
+
+
+                    Intent intent = new Intent(LoginActivity.this, MapActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Toast.makeText(LoginActivity.this, "登录名或密码有误哦~", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private void RegisterListener() {
 
         _signupLink.setOnClickListener(new View.OnClickListener() {
 
@@ -51,88 +97,45 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login() {
-        Log.d(TAG, "Login");
+    private  void init(){
+        _loginButton = (Button)findViewById(R.id.btn_login);
+        _numberText = (EditText)findViewById(R.id.input_number);
+        _passwordText = (EditText)findViewById(R.id.input_password);
+        _signupLink = (TextView) findViewById(R.id.link_signup);
 
-        if (!validate()) {
-            onLoginFailed();
-            return;
-        }
+        pref = getSharedPreferences("LoginData", MODE_PRIVATE);
+        editor = pref.edit();
+        editor.apply();
+        number = pref.getString("number", "");
+        password = pref.getString("password", "");
 
-        _loginButton.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
-
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-
-        // TODO: Implement your own authentication logic here.
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
-            }
+        if (!number.equals("")) {
+            _numberText.setText(number);
+            _passwordText.setText(password);
         }
     }
 
     @Override
-    public void onBackPressed() {
-        // Disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
-    public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
-        finish();
-    }
-
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
-        _loginButton.setEnabled(true);
-    }
-
-    public boolean validate() {
-        boolean valid = true;
-
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
-            valid = false;
-        } else {
-            _emailText.setError(null);
+    protected void onResume(){
+        super.onResume();
+        number = pref.getString("number", "");
+        password = pref.getString("password", "");
+        if (!number.equals("")) {
+            _numberText.setText(number);
+            _passwordText.setText(password);
         }
-
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
-            valid = false;
-        } else {
-            _passwordText.setError(null);
-        }
-
-        return valid;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
