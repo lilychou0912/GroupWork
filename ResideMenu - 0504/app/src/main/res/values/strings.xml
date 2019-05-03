@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">到  此  一  游</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">贝勒爷</string>
+    <string name="nav_header_subtitle">江南渭北三千里</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">设置</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">图片</string>
+    <string name="menu_slideshow">游记</string>
+    <string name="menu_tools">个人设置</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_send">关于到此一游</string>
+</resources>
