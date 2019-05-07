@@ -1,0 +1,116 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:gravity="center_horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/sa_cancel"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:text="取消"
+            android:textStyle="bold"
+            android:textColor="#cccccc"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/sa_ok"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:clickable="true"
+            android:text="分享"
+            android:textStyle="bold"
+            android:textColor="#abcb1e"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <EditText
+            android:id="@+id/sa_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="请填写标签（旅行地区、类型等等）"
+            android:background="@null"
+            android:textColor="#abcb1e"
+            android:textSize="16sp"
+            android:textColorHighlight="#cccccc"
+            android:textColorHint="#cccccc"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+        <android.support.v7.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            app:cardBackgroundColor="#EBE7AE"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp"
+            app:contentPadding="16dp">
+
+            <LinearLayout
+                android:id="@+id/s_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!--后端完成后-->
+                <!--所有文字及图片来自用户数据库-->
+                <TextView
+                    android:id="@+id/sa_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="222"
+                    android:textColor="#666"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/sa_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1111"
+                    android:textColor="#666"
+                    android:textSize="16sp" />
+
+
+                <ImageView
+                    android:id="@+id/sa_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="66dp"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+</LinearLayout>
+

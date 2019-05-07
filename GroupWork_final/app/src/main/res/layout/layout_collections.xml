@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ebe7ae"
+    tools:context="com.example.myapplication.ui.SearchActivity">
+
+    <include layout="@layout/activity_bottom_navigation"
+        android:id="@+id/menu"/>
+
+    <com.example.myapplication.utils.GradScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+
+
+
+                <EditText
+                    android:id="@+id/edit_collection"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/btn_ra"
+                    android:gravity="center_vertical"
+                    android:hint="请输入收藏链接" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/search_collection"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="350dp"
+                    android:layout_marginTop="130dp"
+                    android:background ="#abcb1e"
+                    android:text="收藏"
+                    android:textColor="@color/white" />
+
+
+            </RelativeLayout>
+
+
+            <com.example.myapplication.utils.MyListview
+                android:id="@+id/collections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:divider="#dedede"
+                android:dividerHeight="14dp" />
+
+        </LinearLayout>
+    </com.example.myapplication.utils.GradScrollView>
+    <RelativeLayout
+        android:id="@+id/spaceTopChange"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#003793c7">
+    </RelativeLayout>
+
+
+
+
+
+
+</RelativeLayout>

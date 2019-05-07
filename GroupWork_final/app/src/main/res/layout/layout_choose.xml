@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#EBE7AE"
+    tools:context="com.example.myapplication.ui.ArticleActivity">
+
+    <include layout = "@layout/title_choose"/>
+
+    <include layout="@layout/activity_bottom_navigation"
+        android:id="@+id/menu"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/collection_1"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:text="app内收藏"
+        android:textSize="18sp"
+        android:textColor="#666"
+        android:background ="#abcb1e"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/collection_2"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:layout_below="@+id/collection_1"
+        android:text="app外收藏"
+        android:textColor="#666"
+        android:textSize="18sp"
+        android:background ="#abcb1e"/>
+
+
+</RelativeLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.myapplication.ui.ArticleActivity">
+
+    <include layout="@layout/activity_bottom_navigation"
+        android:id="@+id/menu"/>
+
+    <ImageView
+        android:id="@+id/toCollection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="380dp"
+        app:srcCompat="@mipmap/icon_collection_1" />
+
+    <ImageView
+        android:id="@+id/article"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+
+</RelativeLayout>
